@@ -1239,26 +1239,6 @@ try {
 }
 
 const API = '';
-// Initialize allTasks immediately with preloaded tasks or localStorage so the UI renders in 0ms
-let allTasks = (() => {
-  try {
-    const cached = localStorage.getItem('task_tracker_tasks');
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch (e) {}
-  return [...INITIAL_PRELOAD_TASKS];
-})();
-let tableFilter = 'all';
-let sortState = { field: 'id', dir: 'desc' };
-let calDate = new Date();
-
-function saveLocalBackup(tasks) {
-  try {
-    localStorage.setItem('task_tracker_tasks', JSON.stringify(tasks));
-  } catch (e) {}
-}
 
 const statusColors = {
   'pending':     { dot: '#eab308', bg: 'var(--yellow-light)', text: '#a16207' },
@@ -1379,6 +1359,27 @@ const INITIAL_PRELOAD_TASKS = [
     "notes": []
   }
 ];
+
+// Initialize allTasks immediately with preloaded tasks or localStorage so the UI renders in 0ms
+let allTasks = (() => {
+  try {
+    const cached = localStorage.getItem('task_tracker_tasks');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {}
+  return [...INITIAL_PRELOAD_TASKS];
+})();
+let tableFilter = 'all';
+let sortState = { field: 'id', dir: 'desc' };
+let calDate = new Date();
+
+function saveLocalBackup(tasks) {
+  try {
+    localStorage.setItem('task_tracker_tasks', JSON.stringify(tasks));
+  } catch (e) {}
+}
 
 // ── Dual-Mode Cloud & Local API with Fast Timeout ──
 async function fetchTasks() {
