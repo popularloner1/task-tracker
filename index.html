@@ -1232,10 +1232,24 @@ let useCloud = false;
 try {
   firebase.initializeApp(firebaseConfig);
   db = firebase.firestore();
-  useCloud = true;
-  console.log("Firebase initialized successfully. Live cloud database active.");
+  console.log("Firebase initialized.");
 } catch (e) {
-  console.warn("Firebase initialization skipped or failed, falling back to local backend:", e);
+  console.warn("Firebase initialization skipped:", e);
+}
+
+function updateSyncStatus(status, text) {
+  const pill = document.querySelector('.sync-pill');
+  if (!pill) return;
+  if (status === 'synced') {
+    pill.innerHTML = '<span class="sync-dot" style="background:#10b981;"></span> ' + (text || 'Live Synced');
+    pill.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+  } else if (status === 'local') {
+    pill.innerHTML = '<span class="sync-dot" style="background:#3b82f6;"></span> ' + (text || 'Fast Local (Ready)');
+    pill.style.borderColor = 'rgba(59, 130, 246, 0.35)';
+  } else if (status === 'syncing') {
+    pill.innerHTML = '<span class="sync-dot" style="background:#f59e0b;"></span> ' + (text || 'Syncing...');
+    pill.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+  }
 }
 
 const API = '';
@@ -1381,21 +1395,22 @@ function saveLocalBackup(tasks) {
   } catch (e) {}
 }
 
-// ── Dual-Mode Cloud & Local API with Fast Timeout ──
+// ── Dual-Mode Cloud & Local API with Fast Timeout & Optimistic UI ──
 async function fetchTasks() {
-  if (useCloud && db) {
+  if (db) {
     try {
-      // 2.5 second timeout so disabled Firestore never stalls the UI
       const snapPromise = db.collection("tasks").orderBy("id", "asc").get();
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore timeout')), 2500));
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore timeout')), 1800));
       const snap = await Promise.race([snapPromise, timeoutPromise]);
       if (!snap.empty) {
+        useCloud = true;
         allTasks = snap.docs.map(doc => ({ ...doc.data(), docId: doc.id })).filter(t => t.status !== 'deleted');
         saveLocalBackup(allTasks);
+        updateSyncStatus('synced', 'Cloud Synced');
         renderAll();
         return;
       }
-      // If Firestore collection is empty, seed it
+      // If collection is empty, seed it
       try {
         const batch = db.batch();
         for (const t of allTasks) {
@@ -1403,128 +1418,144 @@ async function fetchTasks() {
           batch.set(ref, t);
         }
         await batch.commit();
+        useCloud = true;
+        updateSyncStatus('synced', 'Cloud Synced');
         renderAll();
         return;
       } catch (seedErr) {
+        useCloud = false;
         console.warn("Firestore seed error:", seedErr);
       }
     } catch (err) {
-      console.warn("Firestore fetch error or timeout, falling back:", err);
+      useCloud = false;
+      console.warn("Firestore not active or timed out, running in local instant mode:", err.message);
     }
   }
 
-  // Fallback to local server API or preloaded tasks
+  // Fallback to local server API (if running on local machine)
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    const timeoutId = setTimeout(() => controller.abort(), 1200);
     const r = await fetch(`${API}/api/tasks`, { signal: controller.signal });
     clearTimeout(timeoutId);
-    const data = await r.json();
-    if (data && data.length > 0) {
-      allTasks = data;
-      saveLocalBackup(allTasks);
+    if (r.ok) {
+      const data = await r.json();
+      if (data && data.length > 0) {
+        allTasks = data;
+        saveLocalBackup(allTasks);
+      }
     }
   } catch (err) {
-    // Keep currently preloaded / local cached tasks
+    // Keep currently cached tasks
   }
+  updateSyncStatus('local', 'Fast Instant');
   renderAll();
 }
 
 async function createTask(d) {
-  if (useCloud && db) {
-    try {
-      // Find max ID
-      const maxId = allTasks.reduce((max, t) => Math.max(max, Number(t.id) || 0), 0) + 1;
-      const now = new Date().toISOString();
-      const newTask = {
-        ...d,
-        id: maxId,
-        status: d.status || 'pending',
-        received_date: d.received_date || today(),
-        created_at: now,
-        updated_at: now,
-        revisions: [],
-        follow_ups: [],
-        notes: []
-      };
-      await db.collection("tasks").doc(String(maxId)).set(newTask);
-      showToast(`Task #${maxId} saved to Cloud`);
-      // Also sync to local backend if running
-      fetch(`${API}/api/tasks`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newTask) }).catch(() => {});
-      return newTask;
-    } catch (err) {
-      console.warn("Firestore create failed, falling back to local:", err);
-    }
-  }
+  const maxId = allTasks.reduce((max, t) => Math.max(max, Number(t.id) || 0), 0) + 1;
+  const now = new Date().toISOString();
+  const newTask = {
+    ...d,
+    id: maxId,
+    status: d.status || 'pending',
+    received_date: d.received_date || today(),
+    created_at: now,
+    updated_at: now,
+    revisions: [],
+    follow_ups: [],
+    notes: []
+  };
 
-  const res = await (await fetch(`${API}/api/tasks`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) })).json();
-  showToast(`Task #${res.id} added`);
-  return res;
+  // 1. Optimistic instant local update (0ms latency!)
+  allTasks.unshift(newTask);
+  saveLocalBackup(allTasks);
+  renderAll();
+  showToast(`Task #${maxId} added`);
+
+  // 2. Background cloud sync
+  if (useCloud && db) {
+    db.collection("tasks").doc(String(maxId)).set(newTask).catch(err => {
+      console.warn("Background cloud task save failed:", err);
+    });
+  }
+  // 3. Local server sync
+  fetch(`${API}/api/tasks`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newTask) }).catch(() => {});
+  return newTask;
 }
 
 async function updateTask(id, d, silent = false) {
-  if (useCloud && db) {
-    try {
-      const now = new Date().toISOString();
-      await db.collection("tasks").doc(String(id)).set({ ...d, updated_at: now }, { merge: true });
-      if (!silent) showToast(`Saved task #${id} (Cloud)`);
-      // Also update local backend if running
-      fetch(`${API}/api/tasks/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).catch(() => {});
-      return { id, ...d };
-    } catch (err) {
-      console.warn("Firestore update failed, falling back to local:", err);
-    }
+  // 1. Optimistic instant local update (0ms latency!)
+  const idx = allTasks.findIndex(x => x.id === id);
+  if (idx !== -1) {
+    allTasks[idx] = { ...allTasks[idx], ...d, updated_at: new Date().toISOString() };
+    saveLocalBackup(allTasks);
+    renderAll();
   }
-
-  const res = await (await fetch(`${API}/api/tasks/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) })).json();
   if (!silent) showToast(`Saved task #${id}`);
-  return res;
+
+  // 2. Background cloud sync
+  if (useCloud && db) {
+    db.collection("tasks").doc(String(id)).set({ ...d, updated_at: new Date().toISOString() }, { merge: true }).catch(err => {
+      console.warn("Background cloud update failed:", err);
+    });
+  }
+  // 3. Local server sync
+  fetch(`${API}/api/tasks/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).catch(() => {});
+  return { id, ...d };
 }
 
 async function deleteTask(id) {
-  if (useCloud && db) {
-    try {
-      await db.collection("tasks").doc(String(id)).set({ status: 'deleted', updated_at: new Date().toISOString() }, { merge: true });
-      showToast(`Deleted task #${id} (Cloud)`);
-      fetch(`${API}/api/tasks/${id}`, { method: 'DELETE' }).catch(() => {});
-      return;
-    } catch (err) {
-      console.warn("Firestore delete failed, falling back to local:", err);
-    }
-  }
-
-  await fetch(`${API}/api/tasks/${id}`, { method:'DELETE' });
+  // 1. Optimistic instant local deletion
+  allTasks = allTasks.filter(x => x.id !== id);
+  saveLocalBackup(allTasks);
+  renderAll();
   showToast(`Deleted task #${id}`);
+
+  // 2. Background cloud delete
+  if (useCloud && db) {
+    db.collection("tasks").doc(String(id)).set({ status: 'deleted', updated_at: new Date().toISOString() }, { merge: true }).catch(err => {
+      console.warn("Background cloud delete failed:", err);
+    });
+  }
+  // 3. Local server sync
+  fetch(`${API}/api/tasks/${id}`, { method: 'DELETE' }).catch(() => {});
 }
 
 async function createRevision(id, d) {
-  if (useCloud && db) {
-    try {
-      const t = allTasks.find(x => x.id === id);
-      const revs = t?.revisions ? [...t.revisions] : [];
-      const revNum = revs.length + 1;
-      const newRev = {
-        ...d,
-        revision_number: revNum,
-        timestamp: new Date().toISOString()
-      };
-      revs.push(newRev);
-      await db.collection("tasks").doc(String(id)).set({
-        revisions: revs,
-        status: 'in-revision',
-        updated_at: new Date().toISOString()
-      }, { merge: true });
-      showToast(`Logged Revision #${revNum} (Cloud)`);
-      fetch(`${API}/api/tasks/${id}/revisions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).catch(() => {});
-      return newRev;
-    } catch (err) {
-      console.warn("Firestore revision failed, falling back to local:", err);
-    }
-  }
+  const t = allTasks.find(x => x.id === id);
+  const revs = t?.revisions ? [...t.revisions] : [];
+  const revNum = revs.length + 1;
+  const newRev = {
+    ...d,
+    revision_number: revNum,
+    timestamp: new Date().toISOString()
+  };
+  revs.push(newRev);
 
-  const res = await (await fetch(`${API}/api/tasks/${id}/revisions`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) })).json();
-  showToast(`Logged Revision #${res.revision_number}`);
-  return res;
+  // 1. Optimistic instant update
+  if (t) {
+    t.revisions = revs;
+    t.status = 'in-revision';
+    t.updated_at = new Date().toISOString();
+    saveLocalBackup(allTasks);
+    renderAll();
+  }
+  showToast(`Logged Revision #${revNum}`);
+
+  // 2. Background cloud sync
+  if (useCloud && db) {
+    db.collection("tasks").doc(String(id)).set({
+      revisions: revs,
+      status: 'in-revision',
+      updated_at: new Date().toISOString()
+    }, { merge: true }).catch(err => {
+      console.warn("Background cloud revision failed:", err);
+    });
+  }
+  // 3. Local server sync
+  fetch(`${API}/api/tasks/${id}/revisions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).catch(() => {});
+  return newRev;
 }
 
 // ── Views ──
