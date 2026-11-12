@@ -1239,10 +1239,26 @@ try {
 }
 
 const API = '';
-let allTasks = [];
+// Initialize allTasks immediately with preloaded tasks or localStorage so the UI renders in 0ms
+let allTasks = (() => {
+  try {
+    const cached = localStorage.getItem('task_tracker_tasks');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {}
+  return [...INITIAL_PRELOAD_TASKS];
+})();
 let tableFilter = 'all';
 let sortState = { field: 'id', dir: 'desc' };
 let calDate = new Date();
+
+function saveLocalBackup(tasks) {
+  try {
+    localStorage.setItem('task_tracker_tasks', JSON.stringify(tasks));
+  } catch (e) {}
+}
 
 const statusColors = {
   'pending':     { dot: '#eab308', bg: 'var(--yellow-light)', text: '#a16207' },
@@ -1364,47 +1380,51 @@ const INITIAL_PRELOAD_TASKS = [
   }
 ];
 
-// ── Dual-Mode Cloud & Local API ──
+// ── Dual-Mode Cloud & Local API with Fast Timeout ──
 async function fetchTasks() {
   if (useCloud && db) {
     try {
-      const snap = await db.collection("tasks").orderBy("id", "asc").get();
+      // 2.5 second timeout so disabled Firestore never stalls the UI
+      const snapPromise = db.collection("tasks").orderBy("id", "asc").get();
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore timeout')), 2500));
+      const snap = await Promise.race([snapPromise, timeoutPromise]);
       if (!snap.empty) {
         allTasks = snap.docs.map(doc => ({ ...doc.data(), docId: doc.id })).filter(t => t.status !== 'deleted');
+        saveLocalBackup(allTasks);
         renderAll();
         return;
       }
-      // If Firestore collection is empty, automatically seed with all your tasks
+      // If Firestore collection is empty, seed it
       try {
         const batch = db.batch();
-        for (const t of INITIAL_PRELOAD_TASKS) {
+        for (const t of allTasks) {
           const ref = db.collection("tasks").doc(String(t.id));
           batch.set(ref, t);
         }
         await batch.commit();
-        allTasks = [...INITIAL_PRELOAD_TASKS];
         renderAll();
-        showToast("Synchronized all tasks to Cloud Database!");
         return;
       } catch (seedErr) {
         console.warn("Firestore seed error:", seedErr);
       }
     } catch (err) {
-      console.warn("Firestore fetch error, falling back:", err);
+      console.warn("Firestore fetch error or timeout, falling back:", err);
     }
   }
 
   // Fallback to local server API or preloaded tasks
   try {
-    const r = await fetch(`${API}/api/tasks`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    const r = await fetch(`${API}/api/tasks`, { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await r.json();
     if (data && data.length > 0) {
       allTasks = data;
-    } else {
-      allTasks = [...INITIAL_PRELOAD_TASKS];
+      saveLocalBackup(allTasks);
     }
   } catch (err) {
-    allTasks = [...INITIAL_PRELOAD_TASKS];
+    // Keep currently preloaded / local cached tasks
   }
   renderAll();
 }
@@ -2193,7 +2213,8 @@ document.addEventListener('keydown', e => {
 });
 document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('show'); }));
 
-// ── Init & Safe Polling (pause while user is editing an input or modal) ──
+// ── Init & Safe Polling ──
+renderAll(); // Instant 0ms initial render with preloaded/cached data
 fetchTasks();
 setInterval(() => {
   const activeTag = document.activeElement?.tagName;
