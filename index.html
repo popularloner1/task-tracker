@@ -1268,6 +1268,102 @@ function showToast(msg) {
   window._toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
 }
 
+// Preloaded initial tasks from your worksheet database (baked in so data is never blank)
+const INITIAL_PRELOAD_TASKS = [
+  {
+    "id": 2,
+    "title": "Pakistan_Documentry_Video",
+    "description": "A Full Documentary Video",
+    "client": "Iron Trader",
+    "project": "",
+    "category": "Video Editing",
+    "priority": "medium",
+    "received_date": "2026-11-10",
+    "delivery_date": "2026-11-12",
+    "status": "in-progress",
+    "created_at": "2026-11-11T23:05:48Z",
+    "updated_at": "2026-11-11T23:19:25Z",
+    "revisions": [],
+    "follow_ups": [],
+    "notes": []
+  },
+  {
+    "id": 3,
+    "title": "Dr. H.R. Nagendra Documentry",
+    "description": "",
+    "client": "",
+    "project": "Documentary",
+    "category": "Video Editing",
+    "priority": "high",
+    "received_date": "2026-11-12",
+    "delivery_date": "2026-11-11",
+    "status": "in-revision",
+    "created_at": "2026-11-12T07:15:28Z",
+    "updated_at": "2026-11-12T07:58:38Z",
+    "revisions": [
+      {
+        "description": "pls add original files which are shot too,pls also add sfx,opening for 2mts its only about science, we should say its an story of Dr nagendra reveal in very beginning,it should not be lag it should go little interesting,check in the beginning for 2mts",
+        "requested_by": "client",
+        "revision_number": 1,
+        "timestamp": "2026-11-12T07:58:38Z"
+      }
+    ],
+    "follow_ups": [],
+    "notes": []
+  },
+  {
+    "id": 4,
+    "title": "Olterra",
+    "description": "Ref- https://www.instagram.com/reel/DYZUMPRD6-p/?igsi=MThhOHFlaTdoYjZidQ==\\n\\nDrive - https://drive.google.com/drive/folders/1qyAWbso1T_IFPIHnnhUC7eJLY4CPepuH",
+    "client": "Olterra",
+    "project": "",
+    "category": "Video Edit",
+    "priority": "medium",
+    "received_date": "2026-11-12",
+    "delivery_date": "2026-11-14",
+    "status": "pending",
+    "created_at": "2026-11-12T07:53:39Z",
+    "updated_at": "2026-11-12T07:53:39Z",
+    "revisions": [],
+    "follow_ups": [],
+    "notes": []
+  },
+  {
+    "id": 5,
+    "title": "PackIQ",
+    "description": "Standalone Direwct- to - Camera reel",
+    "client": "PackIQ",
+    "project": "Reel",
+    "category": "Video Edit",
+    "priority": "medium",
+    "received_date": "2026-11-12",
+    "delivery_date": "2026-11-13",
+    "status": "on-hold",
+    "created_at": "2026-11-12T09:03:23Z",
+    "updated_at": "2026-11-12T09:03:23Z",
+    "revisions": [],
+    "follow_ups": [],
+    "notes": []
+  },
+  {
+    "id": 6,
+    "title": "PackIQ",
+    "description": "Pack et er niche ba upore size mention korte hbe\\nSmall extra small Medium large and xL\\nspecial Editing section need to be shown in white black page With Animated",
+    "client": "PackIQ",
+    "project": "Reel",
+    "category": "Revision",
+    "priority": "medium",
+    "received_date": "2026-11-12",
+    "delivery_date": "2026-11-12",
+    "status": "on-hold",
+    "created_at": "2026-11-12T10:18:09Z",
+    "updated_at": "2026-11-12T10:18:09Z",
+    "revisions": [],
+    "follow_ups": [],
+    "notes": []
+  }
+];
+
 // ── Dual-Mode Cloud & Local API ──
 async function fetchTasks() {
   if (useCloud && db) {
@@ -1278,41 +1374,39 @@ async function fetchTasks() {
         renderAll();
         return;
       }
-      // If Firestore collection is empty, migrate current local tasks up to Cloud
+      // If Firestore collection is empty, automatically seed with all your tasks
       try {
-        const localRes = await fetch(`${API}/api/tasks`);
-        const localTasks = await localRes.json();
-        if (localTasks && localTasks.length > 0) {
-          const batch = db.batch();
-          for (const t of localTasks) {
-            const ref = db.collection("tasks").doc(String(t.id));
-            batch.set(ref, t);
-          }
-          await batch.commit();
-          allTasks = localTasks.filter(t => t.status !== 'deleted');
-          renderAll();
-          showToast("Migrated tasks to 24/7 Cloud Database!");
-          return;
+        const batch = db.batch();
+        for (const t of INITIAL_PRELOAD_TASKS) {
+          const ref = db.collection("tasks").doc(String(t.id));
+          batch.set(ref, t);
         }
-      } catch (err) {
-        console.log("No local tasks to migrate:", err);
+        await batch.commit();
+        allTasks = [...INITIAL_PRELOAD_TASKS];
+        renderAll();
+        showToast("Synchronized all tasks to Cloud Database!");
+        return;
+      } catch (seedErr) {
+        console.warn("Firestore seed error:", seedErr);
       }
-      allTasks = [];
-      renderAll();
-      return;
     } catch (err) {
-      console.warn("Firestore fetch error, falling back to local API:", err);
+      console.warn("Firestore fetch error, falling back:", err);
     }
   }
 
-  // Fallback to local server API
+  // Fallback to local server API or preloaded tasks
   try {
     const r = await fetch(`${API}/api/tasks`);
-    allTasks = await r.json();
-    renderAll();
+    const data = await r.json();
+    if (data && data.length > 0) {
+      allTasks = data;
+    } else {
+      allTasks = [...INITIAL_PRELOAD_TASKS];
+    }
   } catch (err) {
-    console.error("Fetch tasks failed:", err);
+    allTasks = [...INITIAL_PRELOAD_TASKS];
   }
+  renderAll();
 }
 
 async function createTask(d) {
