@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Task Tracker — Worksheet</title>
 
-<!-- Browser Tab Favicons & iOS App Icons -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png?v=2">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon.png?v=2">
-<link rel="shortcut icon" href="/favicon.ico?v=2">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
+<!-- Browser Tab Favicons & iOS App Icons (Embedded Data URI so it displays 100% on all PC browsers without caching or path issues) -->
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAGQklEQVR4nO3dz27cVBTH8XNGs+oTUCEFKUkroQTokhXpZEErZcW/BbSdVEIsYOGHGSEkCoiGSiwAwSpSu4ngCVLaDPRPkgUb3oA1silRoHMmyYztc+719yOrUpWm9vj8dH3ujR3riy+8LsAkfRGd+AWAcMDUV8IBQ1+UcGAyRg6Y6DlgYuSAiZ4DJkYOmPoiPfur6LS+clmBgdkKTIQDJhpSmJjKwsTIARM9B0xMZWFiEQwmeg6Y6DnQ1Z7j6upPTe/i7t5bkim9sJDnZ7u6+mObu7u797Zkp1ddVnLbWk6GPMuiZrbpxYV3JC9XVn/w2vW9vXclI3rxpaw+z5WV730P4N74PckFU9maaUbnM6ue482V77zPp1THoHlsfVVWSGumuZxSFsGaoJIFeo76aS6nlJGjCSpZyHz53IXmckqTGTnGh9+c+G+KDYlgfHjnxH+zsjiU8KKHY3y4JTka/5v1lcVNiSruZWXv4LZ0wLhK/+rSTYkn6CJYR5JxpPq8ARfB4t0m+PDgK+mevYOvX1n6UCIJN3LMk4zRdq3npvVjqD57qJEjUs/xYP8L6baHB1++uvyRxBBo5KglGb6Dx6iOvVfnwb8cItrT8nlI/+3B/i2piVc+RvXt98H+LfeKqJQ/P/RP6K/7n0ut2s/HqO49VufEuS6xeo7aq9XCmumosSC6l0ZfW/7Y9wjuP/3M9wAiu3ThE8e9R18+7zx13He2l5U8qGt1er7b7pNPHT98fLvl+XGrDneCRad+BaLniE+9dkzPEZ36FYiRIz712jE9R3Tq2XNwWQlOGTlgYLaCKTzDEe42QfyXW4GYykanTGVhoyGFgYYUU7B8DgM9B6ag54CB5XPYWD7PVbEx703qvrMVVkgbUWxM+OtMEfFbIaUhDU+9dsxUthGF8TBVsXHmwYOpbFaKmh+zoyHNRVH3A5hMZbuSjNEMDSlT2QwUzTy0zQ/eklc0MWY8w8iRsqLBZDj3HCyCxU1Gya9AjByxkyH0HGkqmk9GhXCkpmgpGSyfp6ZoLxksnyelaDEZFaayiSjaTgbL54koWk9GieXz+AqXZDCVja9wSkbFc+RghTRyMsSxQPQcoZNRoueIqXBPBj1HTEWAZFRYIW39eZBT/v/ub+1ghdTleZDT7sL7fS6EI4xgyRDHAjm/xqvG50EyTYa4vsbL9z1i9Zk/HwGTUfKrTlaLYDM8T3b8e2O+V1D9CuT+AsCzObFCs40fYZNRcXwBYOcb0tjJEMcCpddzjLZPqNaZBo/gySj5VSex2cqRWvKRQDLEd7aSVM9RYz6SSEbFrTo9dSXzmTkf6SRDHKuT8MhxGhNDkFAynEeO1MNx1sltaskQz3Ak2pDOlo8EkyGO1cnkQerR9gmFP838JWAySn4FymHkqKW0QZMhTGVrMnOBwyaj4ladVO8Em/n6MvFbIlO/AmU1csxQ7ODJqLhVJ5+eY4aSp5AMcaxOd28TTCIZFe4+b7f5SCcZQs/RCCsBCSXDueeo8uG4Nev5HKSWDHGsTp4N6fNpOP5nWtSzIc205zgu3WSUeJAaFh6kxhRMZWHgQWpMQc8BAz0HpqDnQMieI4fbBLPW89oxl5X41GvHCV9W/vjzL0nEwvlzM38vU9mckyHV0c6RD6ay+SZjznwwlcUU9Bww0HOczcL5c8ldWRboOVqTVj4W5pmtuPYcqS6CzXPGk9Lz2jE9R3RKzwEb4YDJrUD6/hu74urbXy75HkBkH6zdd9w7I0dw6rjvVKeyHaGu1XF/HFKvrT10/PyRXSvPjGdpmMrGpd6l8R85RPT65bHvWQjoenlOnOui19d+kxju/Pyy9yFEcePy7xKA91sTjm03Bo+8z0YINwaP3Gvxz+b8lP3/tuHgsXTbcPDYvQpHW4ie4/g2HDyRrhqWn13jbOHCUeXjqXTPsPzUGmqLW4mtnWXpjM31fYlHh4OIh3Vka2dJsra5fiBR6eYg7sEdd3tnUTJyc/1QwtPNQQJHCRf96mVNwAT8yB4mfmQPUyd+1SRmw8gBEz0HTIQDJu4Eg4mRAyYaUpgyeekwmsDIARM9B0yMHDCxfA4TIwdM9BwwEQ6YWD5Hjr9NEE2jIYWJqSxMjBwwMVuBiZEDJnoOmBg5YKLngFj+BlbGMSU0rhH9AAAAAElFTkSuQmCC">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
+<link rel="shortcut icon" href="favicon.ico?v=3">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Task Tracker">
@@ -1009,7 +1008,11 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
     <span class="tooltip">Excel Worksheet</span>
   </button>
-  <button class="sidebar-btn" onclick="showView('calendar', this)" aria-label="Calendar">
+    <button class="sidebar-btn" onclick="showView('freelance', this)" aria-label="Freelance">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    <span class="tooltip">Freelance (Webmaa)</span>
+  </button>
+<button class="sidebar-btn" onclick="showView('calendar', this)" aria-label="Calendar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span class="tooltip">Delivery Schedule</span>
   </button>
@@ -1079,6 +1082,63 @@
       </div>
       <div class="sheet-hint">💡 <strong>Spreadsheet Mode:</strong> Click any cell to edit inline (auto-saves immediately), or use the quick-add row at the bottom.</div>
       <div id="tableContainer"></div>
+    </div>
+
+    <!-- ═══ FREELANCE VIEW (Webmaa) ═══ -->
+    <div class="view" id="view-freelance">
+      <div class="dashboard-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(99,102,241,0.12);color:#6366f1;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div>
+            <div class="stat-value" id="flTotalItems">31</div>
+            <div class="stat-label">Total Projects</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(16,185,129,0.12);color:#10b981;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div>
+            <div class="stat-value" id="flPaidTotal" style="color:#10b981;">₹9,450</div>
+            <div class="stat-label">Paid Earnings</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="stat-value" id="flPendingTotal" style="color:#f59e0b;">₹800</div>
+            <div class="stat-label">Pending Payment</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(109,74,255,0.12);color:#6d4aff;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <div class="stat-value" id="flGrandTotal" style="color:#6d4aff;">₹10,250</div>
+            <div class="stat-label">Total Billed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="filter-pills">
+            <button class="filter-pill active" id="flPillAll" onclick="setFreelanceFilter('ALL', this)">All Projects</button>
+            <button class="filter-pill" id="flPillPaid" onclick="setFreelanceFilter('PAID', this)">Paid</button>
+            <button class="filter-pill" id="flPillPending" onclick="setFreelanceFilter('PENDING', this)">Pending</button>
+          </div>
+        </div>
+        <div class="table-toolbar-right">
+          <button class="btn btn-ghost btn-sm" onclick="exportFreelanceExcel()">📊 Export Freelance (.xls)</button>
+        </div>
+      </div>
+      <div class="sheet-hint">💼 <strong>Webmaa-Freelance:</strong> Live tracking of your freelance client deliverables, quantities, rates, and payment receipts.</div>
+      <div id="freelanceTableContainer"></div>
     </div>
 
     <!-- ═══ CALENDAR / SCHEDULE VIEW ═══ -->
@@ -1566,11 +1626,557 @@ function showView(v, btn) {
   if (btn) btn.classList.add('active');
   renderAll();
 }
+const INITIAL_FREELANCE_DATA = [
+  {
+    "id": 1,
+    "serial": "1",
+    "topic": "Prolite_Paints(reels)",
+    "revision": "",
+    "delivery": "30th Jan,2026",
+    "quantity": "1 video",
+    "managed_by": "UC",
+    "rate": 200.0,
+    "total": 200.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 2,
+    "serial": "2",
+    "topic": "Website development Ad (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "5th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 3,
+    "serial": "3",
+    "topic": "Mobile App development Ad (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "5th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 4,
+    "serial": "4",
+    "topic": "Quotation Picture (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "5th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 5,
+    "serial": "5",
+    "topic": "Slide Show (video format) (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "5th Feb, 2026",
+    "quantity": "3 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 500.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 6,
+    "serial": "6",
+    "topic": "ProLlite_Paints(reels) (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "11th Feb, 2026",
+    "quantity": "3 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 500.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 7,
+    "serial": "7",
+    "topic": "Land Video Ad (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "13th Feb, 2026",
+    "quantity": "3 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 500.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 8,
+    "serial": "8",
+    "topic": "Prolite-Paints Social Media post (1:1)",
+    "revision": "",
+    "delivery": "16th Feb, 2026",
+    "quantity": "1 photo",
+    "managed_by": "JM",
+    "rate": 150.0,
+    "total": 150.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 9,
+    "serial": "9",
+    "topic": "Prolite-Paints Social Media AD (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "17th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "JM",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 10,
+    "serial": "10",
+    "topic": "Webmaa Ad Creatives On Website Business  (1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "17th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 11,
+    "serial": "11",
+    "topic": "Gif Making Nova care",
+    "revision": "",
+    "delivery": "19th Feb, 2026",
+    "quantity": "3 Gif",
+    "managed_by": "UC",
+    "rate": 100.0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 12,
+    "serial": "12",
+    "topic": "Need a Professional Website for Your School or Institute?\n(1:1) / (16:9) / (9:16)",
+    "revision": "",
+    "delivery": "20th Feb, 2026",
+    "quantity": "3 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 13,
+    "serial": "13",
+    "topic": "Nail ad Video (1:1) / (16:9)",
+    "revision": "",
+    "delivery": "25th Feb, 2026",
+    "quantity": "2 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 14,
+    "serial": "14",
+    "topic": "Nail women's Day Video (1:1) / (16:9)",
+    "revision": "",
+    "delivery": "4th March,2026",
+    "quantity": "2 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 15,
+    "serial": "15",
+    "topic": "Nail intro video (1:1)/ (16:9)",
+    "revision": "",
+    "delivery": "12th March, 2026",
+    "quantity": "2 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 16,
+    "serial": "15",
+    "topic": "Nail EID video (1:1)/ (16:9)",
+    "revision": "",
+    "delivery": "21th March, 2026",
+    "quantity": "2 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 17,
+    "serial": "15",
+    "topic": "Pailan Video",
+    "revision": "",
+    "delivery": "26th March, 2026",
+    "quantity": "1 video",
+    "managed_by": "UC",
+    "rate": 200.0,
+    "total": 200.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 18,
+    "serial": "16",
+    "topic": "Nail_Poster_Courses",
+    "revision": "",
+    "delivery": "28th March, 2026",
+    "quantity": "1 photo",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 150.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 19,
+    "serial": "17",
+    "topic": "Webmaa_Post_Graphics",
+    "revision": "",
+    "delivery": "01st april, 2026",
+    "quantity": "2 photo",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 20,
+    "serial": "18",
+    "topic": "Webmaa-Ad Video (1:1) / (16:9)",
+    "revision": "",
+    "delivery": "25th april, 2026",
+    "quantity": "2 videos",
+    "managed_by": "UC",
+    "rate": 0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 21,
+    "serial": "19",
+    "topic": "IMPA_Video",
+    "revision": "",
+    "delivery": "10th Jul, 2026",
+    "quantity": "1 videos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 150.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 22,
+    "serial": "20",
+    "topic": "Show_up _restaurant",
+    "revision": "",
+    "delivery": "17th Aug,2026",
+    "quantity": "1 photos",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 150.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 23,
+    "serial": "20",
+    "topic": "executive_presence_01",
+    "revision": "",
+    "delivery": "21th Aug,2026",
+    "quantity": "1 video",
+    "managed_by": "UC",
+    "rate": 200.0,
+    "total": 200.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 24,
+    "serial": "21",
+    "topic": "executive_presence_pt_01",
+    "revision": "5",
+    "delivery": "28th Aug,2026",
+    "quantity": "2 video",
+    "managed_by": "UC",
+    "rate": 200.0,
+    "total": 400.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 25,
+    "serial": "22",
+    "topic": "Executive presence_ Static",
+    "revision": "1",
+    "delivery": "28th Aug,2026",
+    "quantity": "4 photo",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 600.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 26,
+    "serial": "23",
+    "topic": "gravitas perosnal branding 3 statics",
+    "revision": "",
+    "delivery": "3rd Sept,2026",
+    "quantity": "3 photo",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 450.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 27,
+    "serial": "24",
+    "topic": "gravitas 2nd video approachable is strength",
+    "revision": "",
+    "delivery": "3rd Sept,2027",
+    "quantity": "1 video",
+    "managed_by": "UC",
+    "rate": 200.0,
+    "total": 200.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 28,
+    "serial": "25",
+    "topic": "gravitas static image",
+    "revision": "",
+    "delivery": "10th Sept,2026",
+    "quantity": "2 photo",
+    "managed_by": "UC",
+    "rate": 150.0,
+    "total": 300.0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 29,
+    "serial": "26",
+    "topic": "Ai Video -Law",
+    "revision": "",
+    "delivery": "3rd Nov,2026",
+    "quantity": "1 Video",
+    "managed_by": "UC",
+    "rate": 800.0,
+    "total": 800.0,
+    "status": "PENDING",
+    "pay_date": ""
+  },
+  {
+    "id": 30,
+    "serial": "27",
+    "topic": "",
+    "revision": "",
+    "delivery": "",
+    "quantity": "",
+    "managed_by": "",
+    "rate": 0,
+    "total": 0,
+    "status": "PAID",
+    "pay_date": ""
+  },
+  {
+    "id": 31,
+    "serial": "28",
+    "topic": "",
+    "revision": "",
+    "delivery": "",
+    "quantity": "",
+    "managed_by": "",
+    "rate": 0,
+    "total": 0,
+    "status": "PAID",
+    "pay_date": ""
+  }
+];
+
+let freelanceData = (() => {
+  try {
+    const cached = localStorage.getItem('task_tracker_freelance');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {}
+  return INITIAL_FREELANCE_DATA;
+})();
+
+let freelanceFilter = 'ALL';
+
+function saveFreelanceBackup(data) {
+  try { localStorage.setItem('task_tracker_freelance', JSON.stringify(data)); } catch (e) {}
+}
+
+function setFreelanceFilter(f, btn) {
+  freelanceFilter = f;
+  document.querySelectorAll('#view-freelance .filter-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderFreelanceTable();
+}
+
+function renderFreelanceStats() {
+  const total = freelanceData.length;
+  const paid = freelanceData.filter(x => x.status === 'PAID').reduce((sum, x) => sum + (Number(x.total) || 0), 0);
+  const pending = freelanceData.filter(x => x.status !== 'PAID').reduce((sum, x) => sum + (Number(x.total) || 0), 0);
+  const grand = paid + pending;
+
+  const elTotal = document.getElementById('flTotalItems');
+  const elPaid = document.getElementById('flPaidTotal');
+  const elPending = document.getElementById('flPendingTotal');
+  const elGrand = document.getElementById('flGrandTotal');
+
+  if (elTotal) elTotal.textContent = total;
+  if (elPaid) elPaid.textContent = '₹' + Math.round(paid).toLocaleString('en-IN');
+  if (elPending) elPending.textContent = '₹' + Math.round(pending).toLocaleString('en-IN');
+  if (elGrand) elGrand.textContent = '₹' + Math.round(grand).toLocaleString('en-IN');
+}
+
+function renderFreelanceTable() {
+  renderFreelanceStats();
+  const c = document.getElementById('freelanceTableContainer');
+  if (!c) return;
+
+  let items = [...freelanceData];
+  if (freelanceFilter !== 'ALL') {
+    items = items.filter(x => x.status === freelanceFilter);
+  }
+
+  let html = `<div class="table-wrap"><table class="sheet-table">
+    <thead><tr>
+      <th style="width:54px;text-align:center;">#</th>
+      <th>Topic / Project</th>
+      <th style="width:130px;">Delivery</th>
+      <th style="width:110px;">Quantity</th>
+      <th style="width:90px;text-align:center;">Managed</th>
+      <th style="width:90px;text-align:right;">Rate (₹)</th>
+      <th style="width:95px;text-align:right;">Total (₹)</th>
+      <th style="width:105px;text-align:center;">Payment</th>
+      <th style="width:110px;text-align:center;">Pay Date</th>
+    </tr></thead>
+    <tbody>`;
+
+  items.forEach(item => {
+    const isPaid = item.status === 'PAID';
+    const statusPill = isPaid
+      ? `<span class="chip chip-delivered" style="font-size:11px;padding:3px 8px;">PAID</span>`
+      : `<span class="chip chip-pending" style="font-size:11px;padding:3px 8px;">PENDING</span>`;
+
+    html += `<tr>
+      <td class="t-id" style="text-align:center;">${item.serial || item.id}</td>
+      <td style="font-weight:600;color:var(--text);">${esc(item.topic)}</td>
+      <td style="color:var(--text-secondary);font-size:12.5px;">${esc(item.delivery || '—')}</td>
+      <td style="color:var(--text-secondary);font-size:12.5px;">${esc(item.quantity || '—')}</td>
+      <td style="text-align:center;font-weight:600;color:var(--purple);font-size:12px;">${esc(item.managed_by || '—')}</td>
+      <td style="text-align:right;color:var(--text-secondary);font-size:13px;">${item.rate ? '₹' + Math.round(item.rate).toLocaleString('en-IN') : '—'}</td>
+      <td style="text-align:right;font-weight:700;color:var(--text);font-size:13.5px;">${item.total ? '₹' + Math.round(item.total).toLocaleString('en-IN') : '—'}</td>
+      <td style="text-align:center;">${statusPill}</td>
+      <td style="text-align:center;color:var(--text-dim);font-size:12px;">${esc(item.pay_date || '—')}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  c.innerHTML = html;
+}
+
+function exportFreelanceExcel() {
+  let xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Worksheet ss:Name="Webmaa-Freelance">
+  <Table>
+   <Row>
+    <Cell><Data ss:Type="String">Serial</Data></Cell>
+    <Cell><Data ss:Type="String">Topic</Data></Cell>
+    <Cell><Data ss:Type="String">Delivery</Data></Cell>
+    <Cell><Data ss:Type="String">Quantity</Data></Cell>
+    <Cell><Data ss:Type="String">Managed By</Data></Cell>
+    <Cell><Data ss:Type="String">Rate</Data></Cell>
+    <Cell><Data ss:Type="String">Total</Data></Cell>
+    <Cell><Data ss:Type="String">Payment Status</Data></Cell>
+    <Cell><Data ss:Type="String">Payment Date</Data></Cell>
+   </Row>`;
+
+  freelanceData.forEach(item => {
+    xml += `
+   <Row>
+    <Cell><Data ss:Type="String">${item.serial || item.id}</Data></Cell>
+    <Cell><Data ss:Type="String">${esc(item.topic)}</Data></Cell>
+    <Cell><Data ss:Type="String">${esc(item.delivery || '')}</Data></Cell>
+    <Cell><Data ss:Type="String">${esc(item.quantity || '')}</Data></Cell>
+    <Cell><Data ss:Type="String">${esc(item.managed_by || '')}</Data></Cell>
+    <Cell><Data ss:Type="Number">${item.rate || 0}</Data></Cell>
+    <Cell><Data ss:Type="Number">${item.total || 0}</Data></Cell>
+    <Cell><Data ss:Type="String">${item.status}</Data></Cell>
+    <Cell><Data ss:Type="String">${esc(item.pay_date || '')}</Data></Cell>
+   </Row>`;
+  });
+
+  xml += `
+  </Table>
+ </Worksheet>
+</Workbook>`;
+
+  const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Webmaa-Freelance.xls';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Downloaded Freelance Excel (.xls)');
+}
+
 function renderAll() {
   renderDashboard();
   renderBoard();
   renderTable();
   renderCalendar();
+  renderFreelanceTable();
 }
 
 // ── Helpers ──
