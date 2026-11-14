@@ -17,6 +17,198 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+
+  :root {
+    --bg: #0f111a;
+    --bg-white: #181b2a;
+    --bg-card: #181b2a;
+    --bg-input: #121422;
+    --bg-sidebar: #0b0d14;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(109, 74, 255, 0.4);
+    --text: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-dim: #64748b;
+
+    --purple: #8b5cf6;
+    --purple-light: rgba(139, 92, 246, 0.15);
+    --blue: #38bdf8;
+    --blue-light: rgba(56, 189, 248, 0.15);
+    --green: #34d399;
+    --green-light: rgba(52, 211, 153, 0.15);
+    --yellow: #fbbf24;
+    --yellow-light: rgba(251, 191, 36, 0.15);
+    --red: #f87171;
+    --red-light: rgba(248, 113, 113, 0.15);
+    --gray: #64748b;
+
+    --grad-purple: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    --grad-blue: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+    --grad-orange: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
+    --grad-pink: linear-gradient(135deg, #db2777 0%, #f472b6 100%);
+    --grad-green: linear-gradient(135deg, #059669 0%, #34d399 100%);
+    --grad-cyan: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%);
+    --grad-red: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
+
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --shadow-hover: 0 14px 40px rgba(124, 58, 237, 0.22);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  body {
+    background-color: var(--bg);
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%),
+      radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 100% 100%, 28px 28px;
+    background-position: 0 0, 14px 14px;
+    color: var(--text);
+  }
+
+  /* Grid outline & rounded glow effect for cards */
+  .stat-card, .card-panel, .proj-grad-card, .board-column, .table-scroll, .view-details-panel {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    background: rgba(24, 27, 42, 0.75) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
+  }
+  .stat-card:hover, .card-panel:hover {
+    border-color: rgba(139, 92, 246, 0.45) !important;
+    box-shadow: 0 14px 40px rgba(124, 58, 237, 0.25), 0 0 0 1px rgba(139, 92, 246, 0.2) !important;
+    transform: translateY(-3px) !important;
+  }
+
+  .top-header {
+    background: rgba(15, 17, 26, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .header-search input {
+    background: rgba(24, 27, 42, 0.8) !important;
+    border: 1px solid var(--border) !important;
+    color: #fff !important;
+    border-radius: 24px !important;
+  }
+  .header-search input:focus {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+  }
+
+  .recent-item {
+    background: rgba(18, 20, 34, 0.6) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    margin-bottom: 8px !important;
+    transition: all 0.2s !important;
+  }
+  .recent-item:hover {
+    background: rgba(30, 34, 54, 0.8) !important;
+    border-color: rgba(139, 92, 246, 0.35) !important;
+    transform: translateX(3px) !important;
+  }
+
+  .board-column {
+    background: rgba(18, 20, 34, 0.65) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 20px !important;
+  }
+  .task-card {
+    background: rgba(24, 27, 42, 0.95) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.2) !important;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  .task-card:hover {
+    border-color: var(--purple) !important;
+    box-shadow: 0 10px 28px rgba(124, 58, 237, 0.25) !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .data-table, .sheet-table {
+    background: transparent !important;
+  }
+  .data-table thead, .sheet-table thead {
+    background: rgba(18, 20, 34, 0.95) !important;
+  }
+  .data-table th, .sheet-table th {
+    color: #94a3b8 !important;
+    border-bottom: 2px solid var(--border) !important;
+    border-right: 1px solid var(--border) !important;
+  }
+  .data-table td, .sheet-table td {
+    border-bottom: 1px solid var(--border) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+    color: #f1f5f9 !important;
+  }
+  .data-table tbody tr:hover, .sheet-table tbody tr:hover {
+    background: rgba(139, 92, 246, 0.08) !important;
+  }
+  .cell-input {
+    color: #f8fafc !important;
+    background: transparent !important;
+  }
+  .cell-input:focus {
+    background: rgba(18, 20, 34, 0.9) !important;
+    border: 1.5px solid var(--purple) !important;
+    border-radius: 8px !important;
+  }
+
+  .filter-pill {
+    background: rgba(24, 27, 42, 0.7) !important;
+    border: 1px solid var(--border) !important;
+    color: #94a3b8 !important;
+    border-radius: 20px !important;
+  }
+  .filter-pill.active {
+    background: var(--purple) !important;
+    color: #fff !important;
+    border-color: var(--purple) !important;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35) !important;
+  }
+
+  /* Dedicated Details View & Layout */
+  .details-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 900px) {
+    .details-layout { grid-template-columns: 1fr; }
+  }
+  .details-sidebar-list {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .detail-task-item {
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(24, 27, 42, 0.7);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .detail-task-item:hover, .detail-task-item.active {
+    background: rgba(124, 58, 237, 0.16);
+    border-color: var(--purple);
+    transform: translateX(4px);
+  }
+  .detail-content-card {
+    background: rgba(24, 27, 42, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+  }
+
   :root {
     --bg: #f1f4fb;
     --bg-white: #ffffff;
@@ -1008,7 +1200,11 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
     <span class="tooltip">Excel Worksheet</span>
   </button>
-    <button class="sidebar-btn" onclick="showView('freelance', this)" aria-label="Freelance">
+      <button class="sidebar-btn" onclick="showView('details', this)" aria-label="Task Details">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span class="tooltip">Task Details & Notes</span>
+  </button>
+  <button class="sidebar-btn" onclick="showView('freelance', this)" aria-label="Freelance">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
     <span class="tooltip">Freelance (Webmaa)</span>
   </button>
@@ -1082,6 +1278,29 @@
       </div>
       <div class="sheet-hint">💡 <strong>Spreadsheet Mode:</strong> Click any cell to edit inline (auto-saves immediately), or use the quick-add row at the bottom.</div>
       <div id="tableContainer"></div>
+    </div>
+
+    <!-- ═══ DEDICATED TASK DETAILS VIEW ═══ -->
+    <div class="view" id="view-details">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <div>
+          <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.5px;">Task Details & Extended Notes</h2>
+          <p style="font-size:13px; color:var(--text-secondary); margin-top:2px;">Add comprehensive briefs, script links, and revision history without cluttering your main worksheet.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddModal()">＋ New Deliverable</button>
+      </div>
+
+      <div class="details-layout">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.5px;">Select Task</div>
+          <div class="details-sidebar-list" id="detailsSidebarList"></div>
+        </div>
+        <div>
+          <div class="detail-content-card" id="detailContentPane">
+            <p style="text-align:center; padding:60px 20px; color:var(--text-dim);">Select a task on the left to view or edit full details.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ═══ FREELANCE VIEW (Webmaa) ═══ -->
@@ -2171,7 +2390,112 @@ function exportFreelanceExcel() {
   showToast('Downloaded Freelance Excel (.xls)');
 }
 
+
+let selectedDetailId = null;
+
+function renderDetailsView() {
+  const list = document.getElementById('detailsSidebarList');
+  if (!list) return;
+
+  const tasks = [...allTasks].sort((a,b) => b.id - a.id);
+  if (!selectedDetailId && tasks.length > 0) {
+    selectedDetailId = tasks[0].id;
+  }
+
+  list.innerHTML = tasks.map(tk => {
+    const isSel = tk.id === selectedDetailId;
+    return `<div class="detail-task-item ${isSel ? 'active' : ''}" onclick="selectDetailTask(${tk.id})">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <span style="font-weight:700; font-size:13.5px; color:var(--text);">#${tk.id} ${esc(tk.title)}</span>
+        <span class="chip chip-${tk.status}" style="font-size:10px; padding:2px 7px;">${statusLabel(tk.status)}</span>
+      </div>
+      <div style="font-size:12px; color:var(--text-secondary);">${esc(tk.client || tk.project || 'General')} · Due ${tk.delivery_date || '—'}</div>
+    </div>`;
+  }).join('');
+
+  renderDetailContentPane();
+}
+
+function selectDetailTask(id) {
+  selectedDetailId = id;
+  renderDetailsView();
+}
+
+function renderDetailContentPane() {
+  const pane = document.getElementById('detailContentPane');
+  if (!pane) return;
+  const t = allTasks.find(x => x.id === selectedDetailId);
+  if (!t) {
+    pane.innerHTML = '<p style="text-align:center; padding:60px; color:var(--text-dim);">Task not found.</p>';
+    return;
+  }
+
+  pane.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px;">
+      <div>
+        <div style="font-size:12px; font-weight:700; color:var(--purple); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Deliverable #${t.id}</div>
+        <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.5px;">${esc(t.title)}</h1>
+        <div style="font-size:13px; color:var(--text-secondary); margin-top:4px;">Client: <strong style="color:var(--text);">${esc(t.client || '—')}</strong> &nbsp;·&nbsp; Project: <strong style="color:var(--text);">${esc(t.project || '—')}</strong></div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="openEditModal(${t.id})">✏️ Edit Metadata</button>
+        <button class="btn btn-primary btn-sm" onclick="openRevisions(${t.id})">＋ Add Revision</button>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:24px;">
+      <div style="padding:12px 14px; background:rgba(18,20,34,0.6); border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Status</div>
+        <div style="margin-top:4px;"><span class="chip chip-${t.status}">${statusLabel(t.status)}</span></div>
+      </div>
+      <div style="padding:12px 14px; background:rgba(18,20,34,0.6); border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Priority</div>
+        <div style="margin-top:4px;"><span class="priority-badge prio-${t.priority||'medium'}">${(t.priority||'medium').toUpperCase()}</span></div>
+      </div>
+      <div style="padding:12px 14px; background:rgba(18,20,34,0.6); border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Received</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text); margin-top:4px;">${getReceivedDate(t) || '—'}</div>
+      </div>
+      <div style="padding:12px 14px; background:rgba(18,20,34,0.6); border:1px solid var(--border); border-radius:12px;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Delivery Date</div>
+        <div style="font-size:13px; font-weight:700; color:${t.delivery_date && t.delivery_date < today() ? 'var(--red)' : 'var(--text)'}; margin-top:4px;">${t.delivery_date || '—'}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px;">Detailed Brief & Links</label>
+        <span style="font-size:11px; color:var(--text-dim);">Auto-saves to Cloud</span>
+      </div>
+      <textarea id="detailDescInput" style="width:100%; min-height:120px; padding:14px; background:var(--bg-input); border:1.5px solid var(--border); border-radius:12px; color:var(--text); font-family:inherit; font-size:13.5px; line-height:1.6;" placeholder="Add full video brief, Drive folders, Instagram references, timestamps, or script links..." onchange="saveDetailDescription(${t.id}, this.value)">${esc(t.description || '')}</textarea>
+    </div>
+
+    <div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.5px;">Revision History & Feedback (${(t.revisions||[]).length})</label>
+        <button class="btn btn-ghost btn-sm" onclick="openRevisions(${t.id})">＋ Add Note</button>
+      </div>
+      ${(t.revisions||[]).length === 0 ? '<p style="color:var(--text-dim); font-size:13px; padding:14px; background:rgba(18,20,34,0.5); border-radius:12px;">No revisions logged yet.</p>' :
+        '<ul class="revision-list">' + t.revisions.map(r => `
+          <li class="revision-item" style="background:rgba(18,20,34,0.7); border:1px solid var(--border); border-left:3.5px solid var(--purple); border-radius:12px; padding:12px 16px; margin-bottom:10px;">
+            <div class="rev-header"><span class="rev-num" style="color:var(--purple); font-weight:700;">Revision #${r.revision_number}</span><span class="rev-date" style="font-size:11.5px; color:var(--text-dim);">${new Date(r.timestamp).toLocaleString()}</span></div>
+            <div class="rev-desc" style="font-size:13.5px; color:var(--text); margin-top:4px; line-height:1.5;">${esc(r.description||'')}</div>
+            ${r.requested_by ? `<div class="rev-by" style="font-size:12px; color:var(--text-secondary); margin-top:6px;">Requested by: <strong>${esc(r.requested_by)}</strong></div>` : ''}
+          </li>
+        `).join('') + '</ul>'}
+    </div>
+  `;
+}
+
+async function saveDetailDescription(id, val) {
+  const t = allTasks.find(x => x.id === id);
+  if (t) t.description = val;
+  await updateTask(id, { description: val });
+  showToast('Saved brief & details');
+}
+
 function renderAll() {
+  renderDetailsView();
   renderDashboard();
   renderBoard();
   renderTable();
